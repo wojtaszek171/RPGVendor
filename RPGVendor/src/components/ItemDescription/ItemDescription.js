@@ -3,6 +3,7 @@ import './ItemDescription.scss'
 import PropTypes from 'prop-types'
 import Button from '../Button/Button'
 import { sellItem } from '../../database/simpleDatabase'
+import itemsIcons from '../../icons/itemsIcons'
 
 class ItemDescription extends Component {
 
@@ -67,7 +68,9 @@ class ItemDescription extends Component {
       return itemType.id !== 4
       ?
         <React.Fragment>
+          <hr/>
           <Button text={'SELL'} onClick={this.handleSellItem}/>
+          <hr/>
           <Button text={'DISASSEMBLY'} onClick={() => console.log('Disassembly')}/>
         </React.Fragment>
       : 
@@ -90,16 +93,21 @@ class ItemDescription extends Component {
     return (
       <div className="ItemDescriptionComponent">
         <p className="ItemDescriptionName">{item.name}</p>
-        <ul>
-          <li>TYPE: {itemType.name}</li>
-          <li>STACKABLE: {itemType.stackable ? 'yes' : 'no'}</li>
-          {item.damage && <li>DAMAGE: {item.damage}</li>}
-          {item.requiredStrength && <li>REQUIRED STRENGTH: {item.requiredStrength}</li>}
-          {item.healing !== undefined && <li>HEALING: {item.healing}</li>}
-          {item.mana && <li>MANA BONUS: {item.mana}</li>}
-          {item.buy && <li>BUY: {item.buy}</li>}
-          {item.sell && <li>SELL: {item.sell}</li>}
-        </ul>
+        <div className="">
+          <div className="">
+            <svg className="itemDescriptionIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" ><path d="M0 0h512v512H0z" fill="url(#pattern)" fillOpacity="1"></path><g transform="translate(0,0)" ><path d={itemsIcons[item.id]} fill="#000" fillOpacity="1"></path></g></svg>
+          </div>
+          <div className="descriptionList">
+            <span>TYPE: </span><span>{itemType.name}</span>
+            <span>STACKABLE: </span><span>{itemType.stackable ? 'yes' : 'no'}</span>
+            {item.damage && <React.Fragment><span>DAMAGE: </span><span>{item.damage}</span></React.Fragment>}
+            {item.requiredStrength && <React.Fragment><span>STRENGTH: </span><span>{item.requiredStrength}</span></React.Fragment>}
+            {item.healing !== undefined && <React.Fragment><span>HEALING: </span><span>{item.healing}</span></React.Fragment>}
+            {item.mana !== undefined && <React.Fragment><span>MANA BONUS: </span><span>{item.mana}</span></React.Fragment>}
+            {item.buy && <React.Fragment><span>BUY: </span><span>{item.buy}</span></React.Fragment>}
+            {item.sell && <React.Fragment><span>SELL: </span><span>{item.sell}</span></React.Fragment>}
+          </div>
+        </div>
 
         {(isVendor && selected) && this.renderVendorOptions()}
         {(!isVendor && selected) && this.renderPlayerOptions()}
