@@ -13,11 +13,11 @@
     border: 2px solid rgb(137,153,175);
 }
 
-.GridItem{
-    float: left;
+.VendorItemsGridComponent .GridItem{
+    float: right;
 }
 
-.GridItem :hover{
+.VendorItemsGridComponent .GridItem :hover{
     background-color: rgba(178, 179, 179, 0.267);
 }
 
