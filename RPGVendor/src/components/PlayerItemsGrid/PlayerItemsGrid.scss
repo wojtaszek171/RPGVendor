@@ -1,0 +1,28 @@
+.PlayerItemsGridComponent{
+    padding: 5px;
+    width: 100%;
+    height: -webkit-fill-available;
+    text-align: center;
+    font-weight: bold;
+    place-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    overflow: auto;
+}
+
+.PlayerItemsGridComponent > * {
+    border: 2px solid rgb(137,153,175);
+}
+
+.GridItem{
+    float: left;
+}
+
+.GridItem :hover{
+    background-color: rgba(178, 179, 179, 0.267);
+}
+
+.playerItemDescription{
+    right: 5%;
+    position: fixed;
+    z-index: 1;
+}
