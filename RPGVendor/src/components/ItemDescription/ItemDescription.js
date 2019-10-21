@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './ItemDescription.scss'
 import PropTypes from 'prop-types'
 import Button from '../Button/Button'
-import { sellItem, disassemblyItem, useConsumable } from '../../database/simpleDatabase'
+import { sellItem, disassemblyItem, useConsumable, buyItem } from '../../database/simpleDatabase'
 import itemsIcons from '../../icons/itemsIcons'
 
 class ItemDescription extends Component {
@@ -21,8 +21,8 @@ class ItemDescription extends Component {
       PropTypes.string,
       PropTypes.number
     ]).isRequired,
-    vendorCash: PropTypes.number.isRequired,
-    playerCash: PropTypes.number.isRequired,
+    vendorCost: PropTypes.number.isRequired,
+    playerCost: PropTypes.number.isRequired,
 
     isVendor: PropTypes.bool,
     selected: PropTypes.oneOfType([
@@ -40,13 +40,14 @@ class ItemDescription extends Component {
     super(props)
     
     this.state = {
-      sellSliderVal: 1,
+      sliderVal: 1,
       disassembly: false,
-      vendorNotEnoughCash: false,
-      playerNotEnoughCash: false
+      vendorNotEnoughCost: false,
+      playerNotEnoughCost: false
     }
     this.renderPlayerOptions = this.renderPlayerOptions.bind(this)
     this.handleSellItem = this.handleSellItem.bind(this)
+    this.handleBuyItem = this.handleBuyItem.bind(this)
     this.handleSlide = this.handleSlide.bind(this)
     this.handleDisassembly = this.handleDisassembly.bind(this)
     this.handleSubstractSell = this.handleSubstractSell.bind(this)
@@ -64,12 +65,12 @@ class ItemDescription extends Component {
     } = this.props
 
     const {
-      sellSliderVal
+      sliderVal
     } = this.state
 
     closeDescription()
 
-    const result = sellItem(id, vendorId, Number(sellSliderVal))
+    const result = sellItem(id, vendorId, Number(sliderVal))
 
     updatePlayer({
       data: result.playerNewData
@@ -84,22 +85,33 @@ class ItemDescription extends Component {
   handleSlide(event) {
     const {
       vendorCash,
-      item
+      playerCash,
+      item,
+      isVendor
     } = this.props
 
     const newVal = event.target.value
 
-    if (vendorCash < item.sell*newVal) {
-      this.setState({sellSliderVal: Math.floor(vendorCash/item.sell)});
+    if (isVendor) {
+      if (playerCash < item.buy*newVal) {
+        this.setState({sliderVal: Math.floor(playerCash/item.buy)});
+      } else {
+        this.setState({sliderVal: Number(event.target.value)});
+      }
     } else {
-      this.setState({sellSliderVal: Number(event.target.value)});
+      if (vendorCash < item.sell*newVal) {
+        this.setState({sliderVal: Math.floor(vendorCash/item.sell)});
+      } else {
+        this.setState({sliderVal: Number(event.target.value)});
+      }
     }
   }
 
   handleDisassembly() {
     const {
       id,
-      updatePlayer
+      updatePlayer,
+      closeDescription
     } = this.props
 
     const {
@@ -110,6 +122,7 @@ class ItemDescription extends Component {
       updatePlayer({
         data: disassemblyItem(id, 1)
       })
+      closeDescription()
       this.setState({disassembly: false})
     } else {
       this.setState({disassembly: true})    
@@ -118,11 +131,11 @@ class ItemDescription extends Component {
 
   handleSubstractSell () {
     const {
-      sellSliderVal
+      sliderVal
     } = this.state
 
-    if (sellSliderVal > 1) {
-      this.setState({ sellSliderVal: sellSliderVal - 1 });
+    if (sliderVal > 1) {
+      this.setState({ sliderVal: sliderVal - 1 });
     }
     return
   }
@@ -134,11 +147,11 @@ class ItemDescription extends Component {
       vendorCash
     } = this.props
     const {
-      sellSliderVal
+      sliderVal
     } = this.state
 
-    if (vendorCash > item.sell*sellSliderVal && sellSliderVal < itemAmount) {
-      this.setState({ sellSliderVal: sellSliderVal + 1 });
+    if (vendorCash > item.sell*sliderVal && sliderVal < itemAmount) {
+      this.setState({ sliderVal: sliderVal + 1 });
     }
     return
   }
@@ -165,9 +178,9 @@ class ItemDescription extends Component {
       itemsById,
       vendorCash
     } = this.props
-      
+
     return itemType.id !== 4
-    ?
+      ?
       <div className="itemOptions">
         {itemType.id === 2 &&
           <div className="eatOption">
@@ -175,13 +188,13 @@ class ItemDescription extends Component {
             <Button text={"USE CONSUMABLE"} onClick={this.handleUseConsumable} />
           </div>
         }
-        <hr/>
+        <hr />
         <span className="itemOptionTitle">Sell:</span>
         {itemAmount > 1 && <div className="slidecontainer">
-          <Button text={"-"} onClick={this.handleSubstractSell}/><input type="range" min="1" step="1" max={itemAmount} value={this.state.sellSliderVal} className="slider" onChange={this.handleSlide} id="myRange"/><Button text={"+"} onClick={this.handleAddSell}/>
+          <Button text={"-"} onClick={this.handleSubstractSell} /><input type="range" min="1" step="1" max={itemAmount} value={this.state.sliderVal} className="slider" onChange={this.handleSlide} id="myRange" /><Button text={"+"} onClick={this.handleAddSell} />
         </div>}
-        {vendorCash >= item.sell*this.state.sellSliderVal ? 
-          <React.Fragment><Button text={itemAmount > 1 ? 'SELL ('+ this.state.sellSliderVal +')' : 'SELL'} onClick={this.handleSellItem} />&nbsp;<span>Cash: {this.state.sellSliderVal ? '+'+this.state.sellSliderVal*item.sell : '+'+item.sell}</span></React.Fragment>
+        {vendorCash >= item.sell * this.state.sliderVal ?
+          <React.Fragment><Button text={itemAmount > 1 ? 'SELL (' + this.state.sliderVal + ')' : 'SELL'} onClick={this.handleSellItem} />&nbsp;<span>Gain: {this.state.sliderVal ? this.state.sliderVal * item.sell : item.sell}</span></React.Fragment>
           : <span style={{ color: "red" }}>Vendor don't have enough cash</span>
         }
         {item.disassembly &&
@@ -207,8 +220,80 @@ class ItemDescription extends Component {
       <p className="descriptionWarningText">Cannot sell or disassembly</p>
   }
 
+  handleSubstractBuy () {
+    const {
+      sliderVal
+    } = this.state
+
+    if (sliderVal > 1) {
+      this.setState({ sliderVal: sliderVal - 1 });
+    }
+    return
+  }
+
+  handleAddBuy () {
+    const {
+      item,
+      itemAmount,
+      playerCash
+    } = this.props
+    const {
+      sliderVal
+    } = this.state
+
+    if (playerCash > item.buy*sliderVal && sliderVal < itemAmount) {
+      this.setState({ sliderVal: sliderVal + 1 });
+    }
+    return
+  }
+
+  handleBuyItem() {
+    const {
+      id,
+      vendorId,
+      updatePlayer,
+      updateVendors,
+      closeDescription
+    } = this.props
+
+    const {
+      sliderVal
+    } = this.state
+
+    closeDescription()
+
+    const result = buyItem(id, vendorId, Number(sliderVal))
+
+    updatePlayer({
+      data: result.playerNewData
+    })
+
+    updateVendors(
+      vendorId,
+      { data: result.vendorNewData }
+    )
+  }
+
   renderVendorOptions() {
-    return ('vendorOptions')
+    const {
+      itemAmount,
+      item,
+      playerCash
+    } = this.props
+
+    return (
+      <div className="itemOptions">
+        <hr />
+        <span className="itemOptionTitle">Buy:</span>
+        {itemAmount > 1 && <div className="slidecontainer">
+          <Button text={"-"} onClick={this.handleSubstractBuy} /><input type="range" min="1" step="1" max={itemAmount} value={this.state.sliderVal} className="slider" onChange={this.handleSlide} id="myRange" /><Button text={"+"} onClick={this.handleAddBuy} />
+        </div>}
+        {playerCash >= item.buy * this.state.sliderVal ?
+          <React.Fragment><Button text={itemAmount > 1 ? 'Buy (' + this.state.sliderVal + ')' : 'Buy'} onClick={this.handleBuyItem} />&nbsp;<span>Cost: {this.state.sliderVal ? this.state.sliderVal * item.buy : item.buy}</span></React.Fragment>
+          : <span style={{ color: "red" }}>You don't have enough cash</span>
+        }
+      </div>
+    )
   }
 
   render() {

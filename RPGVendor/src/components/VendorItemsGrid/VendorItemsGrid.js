@@ -89,6 +89,7 @@ class VendorItemsGrid extends Component {
             <ItemDescription 
               id={this.state.selectedId || this.state.hoverId}
               selected={this.state.selectedId}
+              itemAmount={this.state.selectedAmount}
               isVendor={true}
               closeDescription={this.handleCloseDescription}/>
           </div>}

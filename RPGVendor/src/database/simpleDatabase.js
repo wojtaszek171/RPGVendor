@@ -114,6 +114,49 @@ export const sellItem = (itemId, vendorId, sellAmount) => {
   }
 }
 
+export const buyItem = (itemId, vendorId, buyAmount) => {
+  var db = new JsonDB(new Config(path, true, false, '/'));
+  const player = db.getData('/player')
+  const vendor = db.getData('/vendorsById/'+vendorId)
+  const itemBuyValue = db.getData('/items').itemsById[itemId].buy
+
+  const playerHasItem = db.getData('/player/inventory/items')[itemId] ? true : false
+
+  if (!playerHasItem) {
+    db.push('/player/inventory/items/'+ itemId, { 'id': itemId, 'amount': buyAmount })
+  } else {
+    const newAmount = db.getData('/player/inventory/items/'+ itemId + '/amount') + buyAmount
+    db.push('/player/inventory/items/'+ itemId +'/amount', newAmount )
+  }
+
+  const vendorItemAmount = db.getData('/vendorsById/'+vendorId+'/items/'+itemId+'/amount')
+  const newVendorAmount = vendorItemAmount - buyAmount
+
+  const newPlayerCash = player.cash - buyAmount*itemBuyValue
+  const newVendorCash = vendor.cash + buyAmount*itemBuyValue
+
+  if (newVendorAmount === 0) {
+    db.delete('/vendorsById/'+vendorId+'/items/'+itemId)
+  } else {
+    db.push('/vendorsById/'+vendorId+'/items/'+itemId+'/amount', newVendorAmount)
+  }
+  db.push('/player/cash', newPlayerCash)
+
+  db.push('/vendorsById/'+vendorId+'/cash', newVendorCash)
+
+  return {
+    playerNewData: {
+      inventory: player.inventory,
+      cash: player.cash
+    },
+    vendorNewData: {
+      id: vendor.id,
+      cash: vendor.cash,
+      items: vendor.items
+    }
+  }
+}
+
 export const disassemblyItem = (itemId, disassemblyAmount) => {
   var db = new JsonDB(new Config(path, true, false, '/'));
   const player = db.getData('/player')

@@ -146,11 +146,13 @@ export default
             "11": {
                 "id": 11,
                 "type": 4,
+                "buy": 1300,
                 "name": "gold crown"
             },
             "12": {
                 "id": 12,
                 "type": 4,
+                "buy": 100,
                 "name": "key to home"
             },
             "13": {
@@ -234,7 +236,11 @@ export default
                 "7": {
                     "id": 7,
                     "amount": 200
-                }
+                },
+                "11": {
+                    "id": 11,
+                    "amount": 1
+                },
             }
         }
     }
