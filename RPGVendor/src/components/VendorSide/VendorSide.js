@@ -7,7 +7,6 @@ import VendorItemsGrid from '../VendorItemsGrid'
 class VendorSide extends Component {
 
   static propTypes = {
-    vendorId: PropTypes.string.isRequired,
     vendor: PropTypes.object.isRequired
   }
 
@@ -30,8 +29,7 @@ class VendorSide extends Component {
 
   render() {
     const {
-        vendor,
-        vendorId
+        vendor
     } = this.props
     
     return (
@@ -41,7 +39,7 @@ class VendorSide extends Component {
             <span className="column">Cash: {vendor ? vendor.cash : ''}</span>
 
           </div>
-          <VendorItemsGrid vendorId={vendorId}/>
+          <VendorItemsGrid/>
       </div>
     );
   }

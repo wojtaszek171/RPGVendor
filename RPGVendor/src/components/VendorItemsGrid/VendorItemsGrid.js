@@ -3,7 +3,6 @@ import  './VendorItemsGrid.scss'
 import PropTypes from 'prop-types'
 import GridItem from './GridItem'
 import ItemDescription from '../ItemDescription'
-import Button from '../Button/Button'
 
 class VendorItemsGrid extends Component {
 
@@ -29,6 +28,7 @@ class VendorItemsGrid extends Component {
     this.toggleHover = this.toggleHover.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
     this.handleClickOutsideDescription = this.handleClickOutsideDescription.bind(this)
+    this.handleCloseDescription = this.handleCloseDescription.bind(this)
 
     window.addEventListener('click', (e) => this.handleClickOutsideDescription(e), true);
   }
@@ -41,7 +41,7 @@ class VendorItemsGrid extends Component {
     this.setState({ hoverId: itemId})
     this.hoverTimer=window.setTimeout(() => {
       this.setState({ showDescription: true })
-    }, 1000);
+    }, 300);
   }
 
   toggleHoverLeave(itemId) {
@@ -59,14 +59,18 @@ class VendorItemsGrid extends Component {
     if (this.hoverTimer) window.clearTimeout(this.hoverTimer);
   }
 
-  handleSelect(id) {
-    this.setState({ selectedId: id })
+  handleSelect(item) {
+    this.setState({ selectedId: item.id, selectedAmount: item.amount })
   }
   
   handleClickOutsideDescription(e) {
     if (document.getElementById('descriptionId') && !document.getElementById('descriptionId').contains(e.target)){
       this.setState({ selectedId: null })
     }
+  }
+
+  handleCloseDescription() {
+    this.setState({ selectedId: null, selectedAmount: null })
   }
 
   render() {
@@ -76,7 +80,7 @@ class VendorItemsGrid extends Component {
     return (
       <div className="VendorItemsGridComponent">
         {vendorInventoryItems && vendorInventoryItems.map( (item, index) => 
-          <div className="GridItem" onMouseEnter={() => this.toggleHover(item.id)} onMouseLeave={() => this.toggleHoverLeave(item.id)}  onClick={() => this.handleSelect(item.id)}>
+          <div className="GridItem" onMouseEnter={() => this.toggleHover(item.id)} onMouseLeave={() => this.toggleHoverLeave(item.id)}  onClick={() => this.handleSelect(item)}>
             <GridItem key={"v"+index} counter={item.amount > 1 ? item.amount : null} itemId={item.id}/>
           </div>
         )}
@@ -85,7 +89,8 @@ class VendorItemsGrid extends Component {
             <ItemDescription 
               id={this.state.selectedId || this.state.hoverId}
               selected={this.state.selectedId}
-              isVendor={true}/>
+              isVendor={true}
+              closeDescription={this.handleCloseDescription}/>
           </div>}
       </div>
     );

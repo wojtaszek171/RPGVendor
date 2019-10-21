@@ -17,8 +17,6 @@ class Shop extends Component {
     const {
       player
     } = this.props
-
-    console.log(player);
     
     return (
       <div className="ShopComponent">

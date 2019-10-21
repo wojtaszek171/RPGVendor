@@ -1,8 +1,23 @@
 import { createSelector } from 'reselect'
 
-const getVendorInventoryItemsById = (state, props) => {  
-  return state.vendors.vendorsById[props.vendorId] ? state.vendors.vendorsById[props.vendorId].items : {}
+const getVendorId = (state, props) => {
+  const action = state.action
+  
+  const vendorId = action.replace('vendor-', '')
+
+  return vendorId  
 }
+
+const getVendorsById = (state, props) => {  
+  return state.vendors.vendorsById
+};
+
+const makeVendorInventoryItemsByIdSelector = createSelector(
+  [getVendorId, getVendorsById],
+  (vendorId, vendorsById) => {
+    return vendorsById[vendorId] && vendorsById[vendorId].items
+  }
+)
 
 const getItemsById = (state, props) => {    
   return state.gameItems.itemsById
@@ -13,7 +28,7 @@ const getItemsTypesById = (state, props) => {
 }
 
 const makeVendorIntentoryItemsSelector = createSelector(
-    [getVendorInventoryItemsById, getItemsById, getItemsTypesById],
+    [makeVendorInventoryItemsByIdSelector, getItemsById, getItemsTypesById],
     (vendorInventoryItemsById, itemsById, itemsTypesById) => {
       if (vendorInventoryItemsById) {
         return Object.keys(vendorInventoryItemsById).reduce((acc, itemId) => {

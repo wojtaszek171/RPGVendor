@@ -164,7 +164,7 @@ export default
     },
     "player": {
         "name": "Gerwant",
-        "cash": 1000,
+        "cash": 2000,
         "hp": 50,
         "mana": 60,
         "inventory": {

@@ -177,8 +177,8 @@ class ItemDescription extends Component {
         }
         <hr/>
         <span className="itemOptionTitle">Sell:</span>
-        {itemAmount > 1 && <div class="slidecontainer">
-          <Button text={"-"} onClick={this.handleSubstractSell}/><input type="range" min="1" step="1" max={itemAmount} value={this.state.sellSliderVal} class="slider" onChange={this.handleSlide} id="myRange"/><Button text={"+"} onClick={this.handleAddSell}/>
+        {itemAmount > 1 && <div className="slidecontainer">
+          <Button text={"-"} onClick={this.handleSubstractSell}/><input type="range" min="1" step="1" max={itemAmount} value={this.state.sellSliderVal} className="slider" onChange={this.handleSlide} id="myRange"/><Button text={"+"} onClick={this.handleAddSell}/>
         </div>}
         {vendorCash >= item.sell*this.state.sellSliderVal ? 
           <React.Fragment><Button text={itemAmount > 1 ? 'SELL ('+ this.state.sellSliderVal +')' : 'SELL'} onClick={this.handleSellItem} />&nbsp;<span>Cash: {this.state.sellSliderVal ? '+'+this.state.sellSliderVal*item.sell : '+'+item.sell}</span></React.Fragment>

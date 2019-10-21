@@ -15,7 +15,8 @@ class PlayerItemsGrid extends Component {
     this.state = {
       hoverId: null,
       showDescription: false,
-      selectedId: false
+      selectedId: null,
+      selectedAmount: null
     }
   }
 
@@ -37,7 +38,7 @@ class PlayerItemsGrid extends Component {
     this.setState({ hoverId: itemId})
     this.hoverTimer=window.setTimeout(() => {
       this.setState({ showDescription: true })
-    }, 1000);
+    }, 300);
   }
 
   toggleHoverLeave(itemId) {
@@ -77,8 +78,8 @@ class PlayerItemsGrid extends Component {
     return (
       <div className="PlayerItemsGridComponent">
         {playerInventoryItems && playerInventoryItems.map( (item, index) => 
-          <div  className="GridItem" onMouseEnter={() => this.toggleHover(item.id)} onMouseLeave={() => this.toggleHoverLeave(item.id)} onClick={() => this.handleSelect(item)}>
-            <GridItem key={"p"+index} counter={item.amount > 1 ? item.amount : null} itemId={item.id}/>
+          <div key={"p"+index} className="GridItem" onMouseEnter={() => this.toggleHover(item.id)} onMouseLeave={() => this.toggleHoverLeave(item.id)} onClick={() => this.handleSelect(item)}>
+            <GridItem counter={item.amount > 1 ? item.amount : null} itemId={item.id}/>
           </div>
         )}
         {(this.state.showDescription || this.state.selectedId) &&
