@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import  './PlayerSide.scss';
 import PropTypes from 'prop-types';
 import { substractPlayerMoney, addPlayerMoney } from '../../database/simpleDatabase';
-import ItemsGrid from '../VendorItemsGrid/VendorItemsGrid';
 import PlayerItemsGrid from '../PlayerItemsGrid';
-const JSONdb = window.require('simple-json-db');
-const db = new JSONdb('database.json');
 
 class PlayerSide extends Component {
 

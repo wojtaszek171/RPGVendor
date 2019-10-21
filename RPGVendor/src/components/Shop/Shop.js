@@ -8,10 +8,18 @@ import VendorSide from '../VendorSide'
 class Shop extends Component {
 
   static propTypes = {
-    vendorId: PropTypes.string.isRequired
+    vendorId: PropTypes.string.isRequired,
+
+    player: PropTypes.object.isRequired
   }
 
   render() {
+    const {
+      player
+    } = this.props
+
+    console.log(player);
+    
     return (
       <div className="ShopComponent">
         <TopBar/>
@@ -19,7 +27,12 @@ class Shop extends Component {
           <div className="column">
             <PlayerSide/>
           </div>
-          <div className="columnSpace"></div>
+          <div className="columnSpace">
+            <div className="descriptionList">
+              <span>Hp:</span><span>{player.hp}/100</span>
+              <span>Mana:</span><span>{player.mana}/100</span>
+            </div>
+          </div>
           <div className="column">
             <VendorSide vendorId={this.props.vendorId}/>
           </div>

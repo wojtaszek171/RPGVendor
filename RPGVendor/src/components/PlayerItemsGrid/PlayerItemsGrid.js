@@ -55,8 +55,8 @@ class PlayerItemsGrid extends Component {
     if (this.hoverTimer) window.clearTimeout(this.hoverTimer);
   }
 
-  handleSelect(id) {
-    this.setState({ selectedId: id })
+  handleSelect(item) {
+    this.setState({ selectedId: item.id, selectedAmount: item.amount })
   }
 
   handleClickOutsideDescription(e) {
@@ -66,7 +66,7 @@ class PlayerItemsGrid extends Component {
   }
 
   handleCloseDescription() {
-    this.setState({ selectedId: null })
+    this.setState({ selectedId: null, selectedAmount: null })
   }
 
   render() {
@@ -77,7 +77,7 @@ class PlayerItemsGrid extends Component {
     return (
       <div className="PlayerItemsGridComponent">
         {playerInventoryItems && playerInventoryItems.map( (item, index) => 
-          <div  className="GridItem" onMouseEnter={() => this.toggleHover(item.id)} onMouseLeave={() => this.toggleHoverLeave(item.id)} onClick={() => this.handleSelect(item.id)}>
+          <div  className="GridItem" onMouseEnter={() => this.toggleHover(item.id)} onMouseLeave={() => this.toggleHoverLeave(item.id)} onClick={() => this.handleSelect(item)}>
             <GridItem key={"p"+index} counter={item.amount > 1 ? item.amount : null} itemId={item.id}/>
           </div>
         )}
@@ -86,6 +86,7 @@ class PlayerItemsGrid extends Component {
           <ItemDescription
             id={this.state.selectedId || this.state.hoverId}
             selected={this.state.selectedId}
+            itemAmount={this.state.selectedAmount}
             closeDescription={this.handleCloseDescription}
           />
         </div>}

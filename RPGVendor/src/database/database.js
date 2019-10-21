@@ -36,7 +36,17 @@ export default
                 "damage": 44,
                 "requiredStrength": 30,
                 "buy": 500,
-                "sell": 50
+                "sell": 50,
+                "disassembly": [
+                    {
+                        id: 9,
+                        amount: 5
+                    },
+                    {
+                        id: 8,
+                        amount: 1
+                    }
+                ]
             },
             "2": {
                 "id": 2,
@@ -45,7 +55,21 @@ export default
                 "damage": 66,
                 "requiredStrength": 50,
                 "buy": 1000,
-                "sell": 100
+                "sell": 100,
+                "disassembly": [
+                    {
+                        id: 9,
+                        amount: 10
+                    },
+                    {
+                        id: 8,
+                        amount: 2
+                    },
+                    {
+                        id: 13,
+                        amount: 1
+                    }
+                ]
             },
             "3": {
                 "id": 3,
@@ -54,7 +78,13 @@ export default
                 "damage": 50,
                 "requiredStrength": 45,
                 "buy": 666,
-                "sell": 66
+                "sell": 66,
+                "disassembly": [
+                    {
+                        id: 9,
+                        amount: 20
+                    }
+                ]
             },
             "4": {
                 "id": 4,
@@ -122,12 +152,21 @@ export default
                 "id": 12,
                 "type": 4,
                 "name": "key to home"
+            },
+            "13": {
+                "id": 13,
+                "type": 3,
+                "name": "silver bar",
+                "buy": 100,
+                "sell": 51
             }
         }
     },
     "player": {
-        "name": "Mister Gerwant",
+        "name": "Gerwant",
         "cash": 1000,
+        "hp": 50,
+        "mana": 60,
         "inventory": {
            "items": {
                 "1": {
@@ -161,6 +200,10 @@ export default
                 "12": {
                     "id": 12,
                     "amount": 1
+                },
+                "2": {
+                    "id": 2,
+                    "amount": 1
                 }
             }           
         }
@@ -170,7 +213,7 @@ export default
         "1": {
             "id": 1,
             "name": "Huan",
-            "cash": 2000,
+            "cash": 15,
             "items": {
                 "1": {
                     "id": 1,

@@ -1,0 +1,14 @@
+.descriptionButton {
+    font-weight: bold;
+    border: 2px solid black;
+    background-color: white;
+    color: black;
+    -moz-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.descriptionButton:hover {
+    background-color: black; /* Green */
+    color: white;
+  }

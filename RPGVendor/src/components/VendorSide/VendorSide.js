@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import  './VendorSide.scss';
-import PropTypes from 'prop-types';
-import { substractPlayerMoney, addPlayerMoney } from '../../database/simpleDatabase';
-import VendorItemsGrid from '../VendorItemsGrid';
-const JSONdb = window.require('simple-json-db');
-const db = new JSONdb('database.json');
+import React, { Component } from 'react'
+import  './VendorSide.scss'
+import PropTypes from 'prop-types'
+import { substractPlayerMoney, addPlayerMoney } from '../../database/simpleDatabase'
+import VendorItemsGrid from '../VendorItemsGrid'
 
 class VendorSide extends Component {
 

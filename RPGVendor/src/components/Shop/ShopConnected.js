@@ -3,8 +3,7 @@ import Shop from "./Shop";
 
 const mapStateToProps = (state) => {
     return {
-      player: state.player,
-      gameItems: state.gameItems
+      player: state.player
     }
 };
 

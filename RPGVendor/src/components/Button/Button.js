@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import './Button.scss';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import './Button.scss'
+import PropTypes from 'prop-types'
 
 class Button extends Component {
 
@@ -8,6 +8,7 @@ class Button extends Component {
     text: PropTypes.oneOfType([
       PropTypes.string,
     ]),
+    additionalStyle: PropTypes.object,
     onClick: PropTypes.func
   }
 
@@ -17,16 +18,9 @@ class Button extends Component {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  componentDidMount() {
-  }
-
-  componentDidUpdate() {
-      
-  }
-
   handleClick() {
     const {
-        onClick
+      onClick
     } = this.props
     
     onClick && onClick()
@@ -34,12 +28,13 @@ class Button extends Component {
 
   render() {
     const {
-      text
+      text,
+      additionalStyle
     } = this.props
     return (
-      <div>
-          <button onClick={this.handleClick}>{text}</button>
-      </div>
+      <button style={additionalStyle ? additionalStyle : undefined} className="descriptionButton" onClick={this.handleClick}>
+          {text}
+      </button>
     );
   }
 }
