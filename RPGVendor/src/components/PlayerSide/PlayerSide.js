@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import  './PlayerSide.scss'
 import PropTypes from 'prop-types'
-import { substractPlayerMoney, addPlayerMoney } from '../../database/simpleDatabase'
 import PlayerItemsGrid from '../PlayerItemsGrid'
 
 class PlayerSide extends Component {
@@ -14,7 +13,7 @@ class PlayerSide extends Component {
     super(props)
   
     this.state = {
-      sort: 0 //0-default, 1-price, 2-type
+      sort: 2 //2-default, 1-price, 2-type
     }
   }
 
@@ -40,14 +39,11 @@ class PlayerSide extends Component {
             <span className="sortSelect">
               Sort by &nbsp;
               <select onChange={this.handleSelectChange} value={this.state.sort}>
-                <option value="0">
-                  default
+                <option value="2">
+                  item type
                 </option>
                 <option value="1">
                   item value
-                </option>
-                <option value="2">
-                  item type
                 </option>
               </select>
             </span>

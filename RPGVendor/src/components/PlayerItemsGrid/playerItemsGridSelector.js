@@ -32,9 +32,26 @@ const makePlayerIntentoryItemsSelector = createSelector(
         const playerInventoryItem = playerInventoryItemsById[itemId]
         const itemTypeId = itemsById[itemId].type
         const stackable = itemsTypesById[itemTypeId].stackable
-        if (stackable || playerInventoryItem.amount === 1) {
+        if (playerInventoryItem.amount === 1) {
           acc.push(playerInventoryItem)
-        } else {
+        } else if (stackable) {
+          const stackSize = itemsTypesById[itemTypeId].stackSize
+          const stacksNumber = Math.ceil(playerInventoryItem.amount/stackSize)
+          for(let i=1; i<=stacksNumber; i++) {
+            if (i===stacksNumber){
+              acc.push({
+                id: itemId,
+                amount: playerInventoryItem.amount - (stacksNumber-1)*stackSize
+              })
+            } else {
+              acc.push({
+                id: itemId,
+                amount: stackSize
+              })
+            }
+          }
+        }
+        else {
           for(let i=0; i<playerInventoryItem.amount; i++) {
             acc.push({
               id: itemId,
@@ -54,8 +71,6 @@ const makeSortedPlayerIntentoryItemsSelector = createSelector(
   [makePlayerIntentoryItemsSelector, getSort, getItemsById],
   (playerInventoryItems, sort, itemsById) => {   
     switch (Number(sort)) {
-      case 0:
-        return playerInventoryItems
       case 1:
         return playerInventoryItems.concat().sort(function compare(a, b) {
           const valueA = itemsById[a.id].sell;
@@ -82,6 +97,8 @@ const makeSortedPlayerIntentoryItemsSelector = createSelector(
           }
           return comparison;
         })
+      default:
+        return playerInventoryItems
     }
   }
 )

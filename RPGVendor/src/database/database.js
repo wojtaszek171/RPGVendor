@@ -13,12 +13,14 @@ export default
                 "id": 2,
                 "name": "consumable",
                 "stackable": true,
+                "stackSize": 32,
                 "canSellOrThrow": true
             },
             "3": {
                 "id": 3,
                 "name": "crafting material",
                 "stackable": true,
+                "stackSize": 64,
                 "canSellOrThrow": true
             },
             "4": {
@@ -171,41 +173,41 @@ export default
         "mana": 60,
         "inventory": {
            "items": {
-                "1": {
-                    "id": 1,
-                    "amount": 2
-                },
-                "3": {
-                    "id": 3,
-                    "amount": 4
-                },
-                "4": {
-                    "id": 4,
-                    "amount": 25
-                },
-                "5": {
-                    "id": 5,
-                    "amount": 3
-                },
                 "6": {
                     "id": 6,
                     "amount": 5
-                },
-                "7": {
-                    "id": 7,
-                    "amount": 11
-                },
-                "11": {
-                    "id": 11,
-                    "amount": 1
                 },
                 "12": {
                     "id": 12,
                     "amount": 1
                 },
+                "3": {
+                    "id": 3,
+                    "amount": 4
+                },
+                "5": {
+                    "id": 5,
+                    "amount": 3
+                },
+                "7": {
+                    "id": 7,
+                    "amount": 11
+                },
+                "1": {
+                    "id": 1,
+                    "amount": 2
+                },
+                "11": {
+                    "id": 11,
+                    "amount": 1
+                },
                 "2": {
                     "id": 2,
                     "amount": 1
+                },
+                "4": {
+                    "id": 4,
+                    "amount": 25
                 }
             }           
         }
@@ -217,30 +219,34 @@ export default
             "name": "Huan",
             "cash": 15,
             "items": {
-                "1": {
-                    "id": 1,
-                    "amount": 2
+                "11": {
+                    "id": 11,
+                    "amount": 1
                 },
                 "3": {
                     "id": 3,
                     "amount": 3
                 },
-                "4": {
-                    "id": 4,
-                    "amount": 100
-                },
                 "5": {
                     "id": 5,
                     "amount": 50
+                },
+                "1": {
+                    "id": 1,
+                    "amount": 2
                 },
                 "7": {
                     "id": 7,
                     "amount": 200
                 },
-                "11": {
-                    "id": 11,
-                    "amount": 1
+                "4": {
+                    "id": 4,
+                    "amount": 100
                 },
+                "10": {
+                    "id": 10,
+                    "amount": 3
+                }
             }
         }
     }

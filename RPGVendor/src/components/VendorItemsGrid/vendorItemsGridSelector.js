@@ -32,41 +32,56 @@ const getItemsTypesById = (state, props) => {
 }
 
 const makeVendorIntentoryItemsSelector = createSelector(
-    [makeVendorInventoryItemsByIdSelector, getItemsById, getItemsTypesById],
-    (vendorInventoryItemsById, itemsById, itemsTypesById) => {
-      if (vendorInventoryItemsById) {
-        return Object.keys(vendorInventoryItemsById).reduce((acc, itemId) => {
-          const vendorInventoryItem = vendorInventoryItemsById[itemId]
-          const itemTypeId = itemsById[itemId].type
-          const stackable = itemsTypesById[itemTypeId].stackable
-          if (stackable || vendorInventoryItem.amount === 1) {
-            acc.push(vendorInventoryItem)
-          } else {
-            for(let i=0; i<vendorInventoryItem.amount; i++) {
+  [makeVendorInventoryItemsByIdSelector, getItemsById, getItemsTypesById],
+  (vendorInventoryItemsById, itemsById, itemsTypesById) => {
+    if (vendorInventoryItemsById) {
+      return Object.keys(vendorInventoryItemsById).reduce((acc, itemId) => {
+        const playerInventoryItem = vendorInventoryItemsById[itemId]
+        const itemTypeId = itemsById[itemId].type
+        const stackable = itemsTypesById[itemTypeId].stackable
+        if (playerInventoryItem.amount === 1) {
+          acc.push(playerInventoryItem)
+        } else if (stackable) {
+          const stackSize = itemsTypesById[itemTypeId].stackSize
+          const stacksNumber = Math.ceil(playerInventoryItem.amount/stackSize)
+          for(let i=1; i<=stacksNumber; i++) {
+            if (i===stacksNumber){
               acc.push({
                 id: itemId,
-                amount: 1
+                amount: playerInventoryItem.amount - (stacksNumber-1)*stackSize
+              })
+            } else {
+              acc.push({
+                id: itemId,
+                amount: stackSize
               })
             }
-          }          
-          return acc
-        }, [])
-      } else {
-        return []
-      }
+          }
+        }
+        else {
+          for(let i=0; i<playerInventoryItem.amount; i++) {
+            acc.push({
+              id: itemId,
+              amount: 1
+            })
+          }
+        }        
+        return acc
+      }, [])
+    } else {
+      return []
     }
+  }
 )
 
 const makeSortedVendorIntentoryItemsSelector = createSelector(
   [makeVendorIntentoryItemsSelector, getSort, getItemsById],
   (vendorIntentoryItems, sort, itemsById) => {   
     switch (Number(sort)) {
-      case 0:
-        return vendorIntentoryItems
       case 1:
         return vendorIntentoryItems.concat().sort(function compare(a, b) {
-          const valueA = itemsById[a.id].sell;
-          const valueB = itemsById[b.id].sell;
+          const valueA = itemsById[a.id].buy;
+          const valueB = itemsById[b.id].buy;
         
           let comparison = 0;
           if (valueA < valueB) {
@@ -89,6 +104,8 @@ const makeSortedVendorIntentoryItemsSelector = createSelector(
           }
           return comparison;
         })
+      default:
+          return vendorIntentoryItems
     }
   }
 )

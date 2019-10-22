@@ -314,7 +314,7 @@ class ItemDescription extends Component {
           </div>
           <div className="descriptionList">
             <span>TYPE: </span><span>{itemType.name}</span>
-            <span>STACKABLE: </span><span>{itemType.stackable ? 'yes' : 'no'}</span>
+            <span>STACKABLE: </span><span>{itemType.stackable ? 'yes('+ itemType.stackSize +')': 'no'}</span>
             {item.damage && <React.Fragment><span>DAMAGE: </span><span>{item.damage}</span></React.Fragment>}
             {item.requiredStrength && <React.Fragment><span>STRENGTH: </span><span>{item.requiredStrength}</span></React.Fragment>}
             {item.healing !== undefined && <React.Fragment><span>HEALING: </span><span>{item.healing}</span></React.Fragment>}
