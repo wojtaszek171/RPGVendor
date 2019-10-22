@@ -52,6 +52,8 @@ class ItemDescription extends Component {
     this.handleDisassembly = this.handleDisassembly.bind(this)
     this.handleSubstractSell = this.handleSubstractSell.bind(this)
     this.handleAddSell = this.handleAddSell.bind(this)
+    this.handleSubstractBuy = this.handleSubstractBuy.bind(this)
+    this.handleAddBuy = this.handleAddBuy.bind(this)
     this.handleUseConsumable = this.handleUseConsumable.bind(this)
   }
 

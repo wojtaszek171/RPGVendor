@@ -15,11 +15,10 @@ class VendorSide extends Component {
     this.state = {
       sort: 2 //2-default, 1-price, 2-type
     }
-  }
 
-  componentDidMount() {
     this.handleSelectChange = this.handleSelectChange.bind(this)   
   }
+
 
   handleSelectChange(e) {
     this.setState({ sort: e.target.value })

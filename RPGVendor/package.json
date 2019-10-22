@@ -1,9 +1,8 @@
 {
-  "name": "cra-electron",
-  "description": "CRA + Electron sitting in a tree",
-  "author": "Kitze",
+  "name": "RPGVendor",
+  "description": "RPG Game Vendor",
+  "author": "Pawel Wojtaszko",
   "version": "0.2.7",
-  "private": true,
   "dependencies": {
     "cross-env": "6.0.2",
     "electron-is-dev": "1.1.0",
