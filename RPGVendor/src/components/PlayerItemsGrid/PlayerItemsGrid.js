@@ -7,6 +7,10 @@ import ItemDescription from '../ItemDescription'
 class PlayerItemsGrid extends Component {
 
   static propTypes = {
+    sort: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]).isRequired,
     playerInventoryItems: PropTypes.array.isRequired
   }
 

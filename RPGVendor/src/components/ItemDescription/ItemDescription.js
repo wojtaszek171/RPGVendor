@@ -319,8 +319,8 @@ class ItemDescription extends Component {
             {item.requiredStrength && <React.Fragment><span>STRENGTH: </span><span>{item.requiredStrength}</span></React.Fragment>}
             {item.healing !== undefined && <React.Fragment><span>HEALING: </span><span>{item.healing}</span></React.Fragment>}
             {item.mana !== undefined && <React.Fragment><span>MANA BONUS: </span><span>{item.mana}</span></React.Fragment>}
-            {item.buy && <React.Fragment><span>BUY: </span><span>{item.buy}</span></React.Fragment>}
-            {item.sell && <React.Fragment><span>SELL: </span><span>{item.sell}</span></React.Fragment>}
+            {isVendor && <React.Fragment><span>VALUE: </span><span>{item.buy}</span></React.Fragment>}
+            {(!isVendor && item.sell) && <React.Fragment><span>VALUE: </span><span>{item.sell}</span></React.Fragment>}
           </div>
         </div>
 

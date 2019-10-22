@@ -1,7 +1,11 @@
 import { createSelector } from 'reselect'
 
+const getSort = (state, props) => {
+  return props.sort
+}
+
 const getPlayerInventoryItemsById = (state, props) => {
-    return state.player.inventory.items
+  return state.player.inventory.items
 }
 
 const getItemsById = (state, props) => {    
@@ -46,9 +50,45 @@ const makePlayerIntentoryItemsSelector = createSelector(
   }
 )
 
+const makeSortedPlayerIntentoryItemsSelector = createSelector(
+  [makePlayerIntentoryItemsSelector, getSort, getItemsById],
+  (playerInventoryItems, sort, itemsById) => {   
+    switch (Number(sort)) {
+      case 0:
+        return playerInventoryItems
+      case 1:
+        return playerInventoryItems.concat().sort(function compare(a, b) {
+          const valueA = itemsById[a.id].sell;
+          const valueB = itemsById[b.id].sell;
+        
+          let comparison = 0;
+          if (valueA < valueB) {
+            comparison = 1;
+          } else if (valueA > valueB) {
+            comparison = -1;
+          }
+          return comparison
+        })        
+      case 2:
+        return playerInventoryItems.concat().sort(function compare(a, b) {
+          const valueA = itemsById[a.id].type;
+          const valueB = itemsById[b.id].type;
+        
+          let comparison = 0;
+          if (valueA > valueB) {
+            comparison = 1;
+          } else if (valueA < valueB) {
+            comparison = -1;
+          }
+          return comparison;
+        })
+    }
+  }
+)
+
 export default createSelector(
   [
-    makePlayerIntentoryItemsSelector,
+    makeSortedPlayerIntentoryItemsSelector,
     getVendorId
   ],
   (

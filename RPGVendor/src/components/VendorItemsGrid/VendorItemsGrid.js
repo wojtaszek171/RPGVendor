@@ -7,6 +7,10 @@ import ItemDescription from '../ItemDescription'
 class VendorItemsGrid extends Component {
 
   static propTypes = {
+    sort: PropTypes.PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]).isRequired,
     vendorInventoryItems: PropTypes.array.isRequired,
     vendorId: PropTypes.oneOfType([
       PropTypes.string,

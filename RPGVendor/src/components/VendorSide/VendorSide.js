@@ -10,36 +10,50 @@ class VendorSide extends Component {
     vendor: PropTypes.object.isRequired
   }
 
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+      sort: 0 //0-default, 1-price, 2-type
+    }
+  }
+
   componentDidMount() {
-    this.addMoney = this.addMoney.bind(this)
-    this.substractMoney = this.substractMoney.bind(this)    
+    this.handleSelectChange = this.handleSelectChange.bind(this)   
   }
 
-  componentDidUpdate() {
-       
-  }
-
-  addMoney() {
-    this.props.updatePlayer({ data: addPlayerMoney(20) });
-  }
-
-  substractMoney() {
-    this.props.updatePlayer({ data: substractPlayerMoney(20) });
+  handleSelectChange(e) {
+    this.setState({ sort: e.target.value })
   }
 
   render() {
     const {
-        vendor
+      vendor
     } = this.props
-    
+
     return (
       <div className="VendorSideComponent">
-          <div className="row">
-            <span className="column">{vendor ? vendor.name : ''}'s Shop</span>
-            <span className="column">Cash: {vendor ? vendor.cash : ''}</span>
-
-          </div>
-          <VendorItemsGrid/>
+        <div className="row">
+          <span className="column">{vendor ? vendor.name : ''}'s Shop</span>
+          <span className="column">Cash: {vendor ? vendor.cash : ''}</span>
+        </div>
+        <div className="row">
+          <span className="sortSelect">
+            Sort by &nbsp;
+              <select onChange={this.handleSelectChange} value={this.state.sort}>
+              <option value="0">
+                default
+                </option>
+              <option value="1">
+                item value
+                </option>
+              <option value="2">
+                item type
+                </option>
+            </select>
+          </span>
+        </div>
+        <VendorItemsGrid sort={this.state.sort}/>
       </div>
     );
   }
