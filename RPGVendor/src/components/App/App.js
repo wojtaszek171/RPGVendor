@@ -5,13 +5,21 @@ import { createDatabase, getPlayer, getVendors, getGameItems, getAction } from '
 
 class App extends Component {
 
+  constructor (props) {
+    super(props)
+    this.state = {
+      loaded: false
+    }
+  }
   componentDidMount() {
-      createDatabase()
-      
-      this.props.playerFetched({ player: getPlayer()})
-      this.props.fetchVendors({ vendorsById: getVendors() })
-      this.props.fetchGameItems( { gameItems: getGameItems() })
-      this.props.fetchAction( { action: getAction() } )
+      createDatabase().then(() => {
+        this.props.playerFetched({ player: getPlayer()})
+        this.props.fetchVendors({ vendorsById: getVendors() })
+        this.props.fetchGameItems( { gameItems: getGameItems() })
+        this.props.fetchAction( { action: getAction() } )
+
+        this.setState({ loaded: true })
+      })
   }
 
   componentDidUpdate() {
@@ -21,7 +29,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Shop vendorId="1"/>
+        {this.state.loaded && <Shop vendorId="1"/>}
       </div>
     );
   }

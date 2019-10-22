@@ -5,26 +5,34 @@ const { JsonDB } = window.require('node-json-db')
 
 const path = 'database.json'
 const fs = window.require('fs');
+const { promisify } = require("util");
+const writeFile = promisify(fs.writeFile);
 
-export const createDatabase = () => {
+export const createDatabase = async () => {
   try {    
     if (!fs.existsSync(path)) {
-      fs.writeFile('database.json', JSON.stringify(database) ,(err)=>{
+      try {
+       await writeFile('database.json', JSON.stringify(database) ,(err)=>{
           if(err) {
               errorHandler(err);
               return;
           }
           successHandler();
-      });
+        });
+        return successHandler();
+      } catch (err) {
+
+      }
       
       function errorHandler() {
       }
       
       function successHandler() {
+        var db = new JsonDB(new Config(path, true, false, '/'));
+        console.log(db.getData(''));
       }
     }
   } catch(err) {
-    console.error(err)
   }
 }
 
