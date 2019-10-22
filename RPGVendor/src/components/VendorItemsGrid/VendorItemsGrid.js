@@ -23,7 +23,8 @@ class VendorItemsGrid extends Component {
     this.state = {
       hoverId: null,
       showDescription: false,
-      selectedId: false
+      selectedId: false,
+      height: window.innerHeight - 100
     }
   }
 
@@ -33,12 +34,15 @@ class VendorItemsGrid extends Component {
     this.handleSelect = this.handleSelect.bind(this)
     this.handleClickOutsideDescription = this.handleClickOutsideDescription.bind(this)
     this.handleCloseDescription = this.handleCloseDescription.bind(this)
+    this.updateDimensions = this.updateDimensions.bind(this)
 
     window.addEventListener('click', (e) => this.handleClickOutsideDescription(e), true);
+    window.addEventListener('resize', this.updateDimensions);
   }
 
   componentWillUnmount() {
     window.removeEventListener('click', (e) => this.handleClickOutsideDescription(e), true);
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
   toggleHover(itemId) {
@@ -46,6 +50,10 @@ class VendorItemsGrid extends Component {
     this.hoverTimer=window.setTimeout(() => {
       this.setState({ showDescription: true })
     }, 300);
+  }
+
+  updateDimensions = () => {
+    this.setState({ height: window.innerHeight - 100 })
   }
 
   toggleHoverLeave(itemId) {
@@ -82,7 +90,7 @@ class VendorItemsGrid extends Component {
       vendorInventoryItems
     } = this.props
     return (
-      <div className="VendorItemsGridComponent">
+      <div className="VendorItemsGridComponent" style={{ height: this.state.height }}>
         {vendorInventoryItems && vendorInventoryItems.map( (item, index) => 
           <div className="GridItem" onMouseEnter={() => this.toggleHover(item.id)} onMouseLeave={() => this.toggleHoverLeave(item.id)}  onClick={() => this.handleSelect(item)}>
             <GridItem key={"v"+index} counter={item.amount > 1 ? item.amount : null} itemId={item.id}/>
